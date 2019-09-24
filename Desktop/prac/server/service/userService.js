@@ -111,12 +111,13 @@ exports.forgotPass= (req, callback)=>{
                 message : "Email doesn't exist",
                 status : 404
             }
+            console.log("2asd");
             callback(error);
         }
         else{
             const token = jwt.sign({email : req.body.email}, process.env.JWT_KEY, 
                 {expiresIn : '1h'});
-            mailer.sendMail(token, req.body.email, (err, data)=>{
+            mailer.sendmail(token, req.body.email, (err, data)=>{
                 if(err){
                     callback(err);
                 }
@@ -125,5 +126,7 @@ exports.forgotPass= (req, callback)=>{
                 }
             })    
         }
+    }).catch(err=>{
+        callback(err);
     })
 }    

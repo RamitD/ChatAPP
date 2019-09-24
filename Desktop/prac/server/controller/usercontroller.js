@@ -1,80 +1,76 @@
 const service = require('../service/userService');
-const tokenAuth =require('../middleware/token');
+const tokenAuth = require('../middleware/token');
 
 exports.addUser = (req, res) => {
     req.checkBody('email').isEmail();
     req.checkBody('password').isLength({ min: 5 })
     req.getValidationResult()
         .then(err => {
-            if(err.isEmpty()){
-                service.addingUser(req, (err, data)=>{
-                    if(err){
+            if (err.isEmpty()) {
+                service.addingUser(req, (err, data) => {
+                    if (err) {
                         res.status(err.status).send(err.message)
                     }
-                    if(data){
+                    if (data) {
                         res.json({
-                            message : data
+                            message: data
                         });
                     }
                 });
             }
-            else{
+            else {
                 res.status(422).json({
-                    error: "efrw "+err
+                    error: "efrw " + err
                 });
             }
-        })
+        }) // 
 }
-exports.loginUser = (req, res)=>{
+exports.loginUser = (req, res) => {
     req.checkBody('email').isEmail();
-    req.checkBody('password').isLength({min : 5})
-    req.getValidationResult().then(err =>{
-        if(err.isEmpty){
-            service.login(req, (err, data)=>{
-                if(err){
-                   return res.status(err.status).send(err.message);
+    req.checkBody('password').isLength({ min: 5 })
+    req.getValidationResult().then(err => {
+        if (err.isEmpty) {
+            service.login(req, (err, data) => {
+                if (err) {
+                    return res.status(err.status).send(err.message);
                 }
-                if(data){
+                if (data) {
                     const token = data.token;
                     res.header("Authorization", token)
                     return res.status(200).json({
-                        info :data
+                        info: data
                     });
                 }
             })
         }
-        else{
+        else {
             return res.status(err.status).send(err.message);
         }
     })
 }
 
-exports.resetpass=(req, res)=>{
+exports.resetpass = (req, res) => {
     req.checkBody('email').isEmail();
-    req.checkBody('newpassword').isLength({min : 5})
-    req.getValidationResult().then(err =>{
-        if(err.isEmpty){
-            var c= req.header("Authorization");
-            var check = tokenAuth.verifyToken(c);
-            console.log(req.getToken);
-            if(check!=null){
-                // res.json({
-                //     message: "works "+check.email
-                // });
-               service.resetPass(req, (err, data)=>{
-                   if(err){
-                       return res.json({
-                           message: err.message
-                       });
-                   }
-                   if(data){
-                       return res.json({
-                           message: data
-                       });
-                   }
-               })
+    req.checkBody('newpassword').isLength({ min: 5 })
+    req.getValidationResult().then(err => {
+        if (err.isEmpty) {
+            var token = req.header("Authorization");
+            var check = tokenAuth.verifyToken(token);
+            if (check != null) {
+                service.resetPass(req, (err, data) => {
+                    if (err) {
+                        return res.json({
+                            message: err.message
+                        });
+                    }
+                    if (data) {
+                        return res.json({
+                            message: data
+                        });
+                    }
+                })
             }
-            else{
+            else {
                 res.json({
                     message: "Invalid Token"
                 });
@@ -83,15 +79,17 @@ exports.resetpass=(req, res)=>{
     })
 }
 
-exports.forgotpass=(req, res)=>{ //
+exports.forgotpass = (req, res) => { //
     req.checkBody('email').isEmail();
-    req.getValidationResult().then(err=>{
-        if(err.isEmpty){
-            service.forgotPass(req, (err, data)=>{
-                if(err){
+    req.getValidationResult().then(err => {
+        if (err.isEmpty) {
+            service.forgotPass(req, (err, data) => {
+                if (err) {
+                    console.log("hgdsfa");
                     return res.send(err.message);
                 }
-                if(data){
+                if (data) {
+                    console.log("dufyhuf");
                     return res.status(200).json({
                         message: data
                     });

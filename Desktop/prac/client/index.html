@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CHATAPP</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+    <script src="app.js"></script>
+</head>
+
+<body ng-app="myApp" ng-controller="MyCtrl as ctrl">
+    <h1>This is the Header</h1>
+    <!-- <a href = "#/!">USER</a> -->
+    <button ng-click="ctrl.clickSignup()">Signup</button>
+    <button ng-click="ctrl.clickLogin()">Login</button>
+    <button ng-click="ctrl.clickResetPassword()">Reset Password</button>
+    <button ng-click="ctrl.clickForgotPassword()">Forgot Password</button>
+    <!-- <p><a href="#!login">Login</a></p>
+    <p><a href="#!forgotPassword">Forgot Password</a></p>
+    <p><a href="#!resetPassword">Reset Password</a></p> -->
+    <div ng-view></div>
+    <p>Thanks for visiting</p>
+
+    <script>
+        // var app =angular.module("myApp", []);
+        // app.controller("myCtrl", main);
+        // function main($scope, $http){
+        //     // $http.get("http://localhost:8000/user/signup", function(response){
+        //     //     $scope.list= response.data;
+        //     // });
+        //     // $scope.list="A List";
+        //     // this.list="A List!!!";
+        // }
+
+        // var app = angular.module("myApp", ["ngRoute"]);
+        // app.config(function ($routeProvider) {
+        //     $routeProvider
+        //         .when("/signup", { templateUrl: "/store/signup.html" })
+        //         .when("/login", { templateUrl: "/store/login.html" })
+        //         .when("/forgotPassword", { templateUrl: "/store/resetpass.html" })
+        // });
+
+    </script>
+</body>
+
+</html>

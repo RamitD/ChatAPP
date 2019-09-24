@@ -9,9 +9,9 @@ const userSchema = mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
+        required: true, // unique : true
         minlength: 3,
-        maxlength: 40
+        maxlength: 40 
     },
     password: {
         type : String,

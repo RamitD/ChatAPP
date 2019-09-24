@@ -1,0 +1,11 @@
+<h3>You are in Reset Password</h3>
+<div ng-controller="MyCtrl as ctrl">
+<p>Enter Email:<input type="text" ng-model="ctrl.email"></input></p>
+<p>Enter Password:<input type="text" ng-model="ctrl.password"></input></p>
+<p>Enter New Password:<input type="text" ng-model="ctrl.newpassword"></input></p>
+<button ng-click="ctrl.resetPassword(ctrl.email, ctrl.password, ctrl.newpassword)">RESET</button>
+<p>{{ctrl.outputR}}</p>
+<p>{{ctrl.email}}</p>
+<p>{{ctrl.password}}</p>
+<p>{{ctrl.newpassword}}</p>
+</div>

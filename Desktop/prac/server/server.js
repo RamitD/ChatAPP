@@ -41,11 +41,23 @@ app.use(validator());         // MiddleWare Express-Validator to validate inputs
 
 
 
-app.use('/user', userRoute);   // a Middleware to route to userRoute where user is the input
+  // a Middleware to route to userRoute where user is the input
 
-app.get('/', (req, res)=>{
-    res.send("In Home Page");
+// For Avoiding CORS errors
+app.use((req,res,next)=>{
+    res.header('Access-Control-Allow-Origin','*');
+    res.header('Access-Control-Allow-Headers','*');      //Instead of * request may be Origin,Content-Type etc. 
+
+    if(req.method==='OPTIONS'){
+        res.header('Access-Control-Allow-Methods','PUT, POST, PATCH, DELETE, GET');
+        return res.status(200).json({});
+    }
+    next();
 })
+app.use('/user', userRoute); 
+// app.get('/', (req, res)=>{
+//     res.send("In Home Page");
+// })
 
 //const port =process.env.PORT || 3000;
 

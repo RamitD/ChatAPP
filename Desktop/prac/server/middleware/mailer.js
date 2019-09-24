@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mailer =require('nodemailer');
 
-exports.sendMail = (token, body, callback) => {
+exports.sendmail = (token, body, callback) => {
     var transporter = mailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -17,7 +17,7 @@ exports.sendMail = (token, body, callback) => {
         from: process.env.USERMAIL,
         to: body,
         subject: 'testing node-mailer',
-        text: "http://localhost:3000/resetpass/" + token
+        text: "http://127.0.0.1:8080/#!/resetpass/" + token
     }
 
     transporter.sendMail(mailOptions, (err, data) => {
