@@ -5,6 +5,7 @@ var app = angular.module("myApp", ["ngRoute"]);
                 .when("/login", { templateUrl: "/store/login.html" })
                 .when("/forgotPassword", { templateUrl: "/store/forgotpassword.html" })
                 .when("/resetPassword", { templateUrl: "/store/resetpass.html" })
+                .when("/setPassword", { templateUrl: "/store/setpassword.html"})
         });
 
 app.controller("MyCtrl", myCtrl);
@@ -73,10 +74,9 @@ function myCtrl($location, $http){
         })
 
     }
-    this.resetPassword=function(email, password, newpassword){
+    this.resetPassword=function(email, newpassword){
         this.dataR={
             email: email,
-            password: password,
             newpassword: newpassword
         }
         $http({
@@ -114,6 +114,30 @@ function myCtrl($location, $http){
             }
         });
 
+    }
+    this.setToken=function(gToken, email){
+        this.dataS={
+            email: email
+        }
+        this.outputS="Unable to Change Password";
+        $http({
+            method: "POST",
+            url:"http://localhost:8000/user/setpass",
+            data : this.dataS
+        })
+        .then(response=>{
+            if(response.data.message==="okay token recieved"){
+                $http.defaults.headers.common['Authorization'] = gToken;
+                this.outputS="Click on Reset Password";
+            }
+            else if(response.data.message==="error occured"){
+                this.outputS="error occured";
+            }
+        }).catch(err=>{
+            if(err){
+                this.outputS="error occured";
+            }
+        })
     }
     
 }

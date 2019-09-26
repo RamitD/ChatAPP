@@ -98,3 +98,15 @@ exports.forgotpass = (req, res) => { //
         }
     });
 }
+
+exports.setpass = (req, res) => {
+    req.checkBody('email').isEmail();
+    req.getValidationResult().then(err => {
+        if (err.isEmpty) {
+            return res.status(200).json({message:"okay token recieved"});
+        }
+        else{
+            return res.status(500).json({message:"error occured"});
+        }
+    });
+}
