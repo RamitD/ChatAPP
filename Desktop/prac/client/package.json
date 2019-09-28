@@ -9,7 +9,9 @@
   "license": "ISC",
   "dependencies": {
     "http-server": "^0.11.1",
-    "json-server": "^0.15.1"
+    "json-server": "^0.15.1",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {},
   "description": ""

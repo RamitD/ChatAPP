@@ -5,7 +5,36 @@
     <title>CHATAPP</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
     <script src="app.js"></script>
+    <!-- <script src="chat.js"></script> -->
+    <style>
+            #parag{
+                text-align: center;
+                font-size: 32px;
+            }
+            #list {
+                float: left;
+                width: 20%;
+                height: 400px;
+                background: greenyellow;
+            }
+            #faf{
+                width: 100%;
+                height: 350px;
+                background: rgb(145, 107, 184);
+            }
+            #nameID{
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-size: 20px;
+                padding: 6px;
+            }
+            #ads{
+                width: 100%;
+                height: 50px;
+                background: rgb(173, 168, 179);
+            }
+        </style>
 </head>
 
 <body ng-app="myApp" ng-controller="MyCtrl as ctrl">
@@ -20,7 +49,24 @@
     <p><a href="#!resetPassword">Reset Password</a></p> -->
     <div ng-view></div>
     <p>Thanks for visiting</p>
+    <div id="mario-chat">
+        <h2>Mario Chat</h2>
+        <div id="ot"></div>
+        <div id="chat-window">
 
+            <!-- <div id="output"></div> -->
+            <!-- <p>In para ~ {{chatHistory.handle}} : {{chatHistory.message}}</p> -->
+            <!-- <div>************</div> -->
+            <!-- <p ng-repeat="c in chatH">In para ~ {{c.handle}} : {{c.message}}</p> -->
+            <!-- <p>*******************************</p> -->
+        </div>
+        <input id="handle" type="text" ng-model ="handle" placeholder="Handle" />
+        <input id="message" type="text" ng-model="msg" placeholder="Message" />
+        <!-- <button id="send" ng-click="sendMessage(msg, handle)">Send</button> -->
+        <button id="send" ng-click="send(msg, handle)">Send</button>
+    </div>
+    
+        
     <script>
         // var app =angular.module("myApp", []);
         // app.controller("myCtrl", main);

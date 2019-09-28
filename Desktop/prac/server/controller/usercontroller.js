@@ -110,3 +110,50 @@ exports.setpass = (req, res) => {
         }
     });
 }
+
+exports.getdata=(req, res)=>{
+    service.getInfo(req, (err, data)=>{
+        if(err){
+            res.json({
+                error: err
+            });
+        }
+        if(data){
+            res.json({
+                message:data
+            });
+        }
+    });
+}
+
+exports.getChat=(req, res)=>{
+    service.getChat(req, (err, data)=>{
+        if(err){
+            res.json({
+                error: err
+            });
+        }
+        if(data){
+            res.json({
+                message:data
+            });
+        }
+    });
+}
+
+
+exports.storeMessage=(req, res)=>{
+    service.storeMessage(req, (err, data)=>{
+        if(err){
+            console.log("dsa");
+            res.send({
+                error:err
+            });
+        }
+        if(data){
+            res.send({
+                info:data
+            });
+        }
+    });
+}

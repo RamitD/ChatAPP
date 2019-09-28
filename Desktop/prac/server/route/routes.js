@@ -28,4 +28,9 @@ app.patch('/resetpass', userController.resetpass);
 app.post('/forgotpass', userController.forgotpass);
 
 app.post('/setpass', userController.setpass);
+
+app.get('/getData', userController.getdata);
+
+app.post('/storeMessage', userController.storeMessage);
+
 module.exports=app;

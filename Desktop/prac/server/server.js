@@ -5,6 +5,8 @@ const mongoose=require('mongoose');
 const validator =require('express-validator');  
 const userRoute=require('./route/routes');
 const jwt =require('jsonwebtoken');
+const socket=require('socket.io');
+
 require('dotenv').config();
 
 // mongoose.Promise=global.Promise;
@@ -57,9 +59,20 @@ app.use((req,res,next)=>{
 app.use('/user', userRoute); 
 // app.get('/', (req, res)=>{
 //     res.send("In Home Page");
-// })
+// 
 
 //const port =process.env.PORT || 3000;
 
 
-app.listen(8000); // creates a listener on this port to execute the program 
+var server=app.listen(8000, function(){
+    console.log("Listening to port 8000");
+}); // creates a listener on this port to execute the program 
+
+app.use(express.static('../client'))
+var io =socket(server);
+io.on('connection', function(socket){
+    console.log("New connection");
+    socket.on('chat', function(data){
+        io.sockets.emit('chat-send', data);
+    });
+});

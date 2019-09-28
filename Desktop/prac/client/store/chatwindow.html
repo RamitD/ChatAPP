@@ -1,0 +1,31 @@
+<p id="parag">Welcome to ChatAPP</p>
+        <section ng-app="MyApp">
+            <div id="list" ng-controller="MyCtrl as ctrl">
+                <p>USERS!!!</p>
+                <div id="nameID" ng-repeat="n in nameList">
+                    <button ng-click="setChatroom(n.name)">{{n.name}}</button>
+                </div>
+                <!-- <ul ng-repeat="let name in nameList">
+                    <li>{name}</li>
+                </ul> -->
+            </div>
+            <div>
+                <div id="faf">
+                        Show the chat History
+                        <div ng-repeat="chat in chatRoom">{{chat}}</div>
+                    <!-- Show the chat History -->
+                </div>
+                <div id="ads">
+                    <input type="text" ng-model="chat" placeholder="Enter Message">
+                    <span>
+                        <button ng-click="sendMessage(chat)">SEND</button>
+                    </span>
+                    {{chat}}
+                </div>
+            </div>
+            <!-- <div>{{i}} 123</div> -->
+            <!-- <p>{{name}} jhcjh</p> -->
+            <!-- <div ng-repeat="n in nameList">{{n}} 4156</div> -->
+            <!-- <div>{{ctrl.nameList}} 1312 </div> -->
+            <!-- <div>{{ctrl.name}} 31</div> -->
+        </section>
