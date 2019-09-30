@@ -157,6 +157,7 @@ exports.getChat=(req, callback)=>{
 exports.storeMessage = (req, callback) => {
     var name1=req.body.sender;
     var name2=req.body.reciever;
+    console.log(req.body.message);
     if(name1>name2){
         var tempName= name1;
         name1=name2;
@@ -172,8 +173,6 @@ exports.storeMessage = (req, callback) => {
                 const chat = new Message({
                     name1: name1,
                     name2: name2,
-                    sender: req.body.sender,
-                    reciever: req.body.reciever,
                     messageStore: [messageString]
                 });
                 var array=[messageString];
@@ -190,22 +189,22 @@ exports.storeMessage = (req, callback) => {
                 var temp = messageSet[0].messageStore;
                 let messageString=req.body.sender+" : "+req.body.message;
                 temp.push(messageString);
-                Message.updateOne({ name1: name1, name2: name2 }, { $set: { messageStore: temp } }).exec()
+                Message.findOneAndUpdate({ name1: name1, name2: name2 }, { $set: { messageStore: temp } },{new:true})
                     .then(result => {
-                        console.log(result);
+                        console.log("hiii",temp);
                         callback(null, temp);
                     })
                     .catch(err => {
                         console.log(err.message);
                         callback(err);
                     })
-                Message.find({ name1: name1, name2: name2 }).exec()
-                .then(result=>{
-                    console.log(result[0].messageStore);
-                })
-                .catch(err=>{
-                    console.log(err.message);
-                });
+                // Message.find({ name1: name1, name2: name2 }).exec()
+                // .then(result=>{
+                //     console.log(result[0].messageStore);
+                // })
+                // .catch(err=>{
+                //     console.log(err.message);
+                // });
             }
         })
         .catch(err=>{

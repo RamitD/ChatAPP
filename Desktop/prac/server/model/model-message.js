@@ -12,14 +12,6 @@ const messageSchema= mongoose.Schema({
     messageStore:{
         type:Array,
         required:true
-    },
-    sender:{
-        type:String,
-        required:true
-    },
-    reciever:{
-        type:String,
-        required:true
     }
 });
 

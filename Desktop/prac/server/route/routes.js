@@ -31,6 +31,8 @@ app.post('/setpass', userController.setpass);
 
 app.get('/getData', userController.getdata);
 
+// app.get('/getChatroom', userController.getChat);
+
 app.post('/storeMessage', userController.storeMessage);
 
 module.exports=app;

@@ -12,7 +12,7 @@
             <div>
                 <div id="faf">
                         Show the chat History
-                        <div ng-repeat="chat in chatRoom">{{chat}}</div>
+                        <div id="chat-room" ng-repeat="chat in chatRoom track by $index">{{chat}}</div>
                     <!-- Show the chat History -->
                 </div>
                 <div id="ads">

@@ -6,6 +6,7 @@ const validator =require('express-validator');
 const userRoute=require('./route/routes');
 const jwt =require('jsonwebtoken');
 const socket=require('socket.io');
+const Message = require('../server/model/model-message');
 
 require('dotenv').config();
 
@@ -48,7 +49,7 @@ app.use(validator());         // MiddleWare Express-Validator to validate inputs
 // For Avoiding CORS errors
 app.use((req,res,next)=>{
     res.header('Access-Control-Allow-Origin','*');
-    res.header('Access-Control-Allow-Headers','*');      //Instead of * request may be Origin,Content-Type etc. 
+    res.header('Access-Control-Allow-Headers','*');      //Instead of * request may be Origin,Content-Type etc 
 
     if(req.method==='OPTIONS'){
         res.header('Access-Control-Allow-Methods','PUT, POST, PATCH, DELETE, GET');
@@ -72,7 +73,62 @@ app.use(express.static('../client'))
 var io =socket(server);
 io.on('connection', function(socket){
     console.log("New connection");
-    socket.on('chat', function(data){
-        io.sockets.emit('chat-send', data);
-    });
+    // socket.on('chat', function(data){
+    //     io.sockets.emit('chat-send', data);
+    // });
+    socket.on('chats', function(data){
+        console.log("In server chat recieve", data);
+        // Message Update
+        var name1=data.sender;
+        var name2=data.reciever;
+        if(name1>name2){
+            var tempName= name1;
+            name1=name2;
+            name2=tempName;
+        }
+        Message.find({ name1: name1, name2: name2 }).exec()
+        .then(messageSet => {
+            console.log("ads")
+            if (messageSet.length==0) {
+                let messageString=data.sender+" : "+data.message;
+                const chat = new Message({
+                    name1: name1,
+                    name2: name2,
+                    messageStore: [messageString]
+                });
+                // var array=[messageString];
+                chat.save().then(result => {
+                    io.sockets.emit('chat-recieve', result)
+                })
+                    .catch(err => {
+                        console.log(err.message);
+                    });
+            }
+            else {
+                console.log()
+                var temp = messageSet[0].messageStore;
+                let messageString=data.sender+" : "+data.message;
+                temp.push(messageString);
+                Message.findOneAndUpdate({ name1: name1, name2: name2 }, { $set: { messageStore: temp } },{new:true})
+                    .then(result => {
+                        console.log("hiii",result);
+                        io.sockets.emit('chat-recieve', result);
+                    })
+                    .catch(err => {
+                        console.log(err.message);
+                    })
+                // Message.find({ name1: name1, name2: name2 }).exec()
+                // .then(result=>{
+                //     console.log(result[0].messageStore);
+                // })
+                // .catch(err=>{
+                //     console.log(err.message);
+                // });
+            }
+        })
+        .catch(err=>{
+            console.log(err.message);
+        });
+        // io.sockets.emit('chat-recieve', data);
+    })
 });

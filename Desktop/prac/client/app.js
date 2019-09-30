@@ -10,14 +10,15 @@ app.config(function ($routeProvider) {
         .when("/setPassword", { templateUrl: "/store/setpassword.html" })
         .when("/chatwindow", { templateUrl: "/store/chatwindow.html" })
 });
-var sender="";
-var reciever="";
+var sender = "";
+var reciever = "";
+var chatR = [];
 app.controller("MyCtrl", myCtrl);
 function myCtrl($location, $http, $scope) {
     var socket = io.connect('http://localhost:8000/#!/');
     // this.email="email";
     // this.password="password";
-    
+
     // $scope.sender="";
     this.output = "";
     this.data = {};
@@ -26,7 +27,7 @@ function myCtrl($location, $http, $scope) {
     this.dataR = {};
     $scope.name = "DSAF";
     $scope.nameList = [];
-    $scope.chat="";
+    $scope.chat = "";
     // this.sender = "";
     // $scope.sender="AAA";
     // $scope.reciever = "";
@@ -89,14 +90,14 @@ function myCtrl($location, $http, $scope) {
                     // })
                     // $scope.sender=response.data.info.name ;
                     // this.sender = response.data.info.name;
-                    sender=response.data.info.name;
+                    sender = response.data.info.name;
                     console.log(sender + " NAME of Sender")
                     this.outputL = "User Logged In";
                     $location.path("/chatwindow");
                 }
             }).catch(err => {
                 if (err) {
-                    this.outputL = err.message+"Unable to Login!!!";
+                    this.outputL = err.message + "Unable to Login!!!";
                 }
             })
     }
@@ -198,7 +199,22 @@ function myCtrl($location, $http, $scope) {
     socket.on('chat-send', function (data) {
         output.innerHTML += '<p><strong>' + data.handle + ': </strong>' + data.message + '</p>';
     });
-    
+
+    socket.on('chat-recieve', function (data) {
+        console.log("In client Chat Recieve", data);
+        console.log("reciever: " + reciever + "sender " + sender);
+        if ((data.name1 == reciever && data.name2 == sender) || (data.name1 == sender && data.name2 == reciever)) {
+            $scope.$apply(() => {
+                $scope.chatRoom = data.messageStore;
+
+            })
+        }
+        // console.log("client AGDHAS",$scope.chatRoom)
+        // if(data.sender == sender && data.reciever == reciever){
+        //     $scope.chatRoom=data.chatR;
+        // }
+    });
+
     $scope.setChatroom = function (_reciever) {
         reciever = _reciever;
         var chatData = {
@@ -206,41 +222,62 @@ function myCtrl($location, $http, $scope) {
             reciever: reciever,
             message: $scope.message
         }
-        
-        console.log("Sender : " + sender + " Reciever : " + reciever);
-        $http({
-            method: "POST",
-            url: "http://localhost:8000/user/storeMessage",
-            data: chatData
-        }).then(response => {
-            $scope.chatRoom = response.data.info;
-            // $scope.$apply(()=>{
-            //     $scope.chatRoom=response.data.info;
-            // })
-        })
-            .catch(err => {
-                console.log(err.message);
-            })
+        socket.emit('chats', chatData);
+
+        // console.log("Sender : " + sender + " Reciever : " + reciever);
+        // $http({
+        //     method: "POST",
+        //     url: "http://localhost:8000/user/storeMessage",
+        //     data: chatData
+        // }).then(response => {
+        //     $scope.chatRoom = response.data.info;
+        //     chatR = response.data.info;
+        //     // $scope.$apply(()=>{
+        //     //     $scope.chatRoom=response.data.info;
+        //     // })
+        // }).catch(err => {
+        //     console.log(err.message);
+        // })
+        // chatObject = {
+        //     sender: sender,
+        //     reciever: reciever,
+        //     chatR: chatR
+        // }
+        // console.log("chatobject: ",chatObject);
+
         // $scope.message = "";
     }
-    $scope.sendMessage=function(_message){
-        $scope.message=_message;
+
+    $scope.sendMessage = function (_message) {
+        $scope.message = _message;
+        console.log("Sender : " + sender + " Reciever : " + reciever)
         var chatData = {
             sender: sender,
             reciever: reciever,
             message: $scope.message
         }
-        $http({
-            method: "POST",
-            url: "http://localhost:8000/user/storeMessage",
-            data: chatData
-        })
-        .then(response=>{
-            $scope.chatRoom = response.data.info;
-        })
-        .catch(err=>{
-            console.log(err.message);
-        })
+        socket.emit('chats', chatData);
+        $scope.chat ="";
+        // $http({
+        //     method: "POST",
+        //     url: "http://localhost:8000/user/storeMessage",
+        //     data: chatData
+        // })
+        //     .then(response => {
+        //         $scope.chatRoom = response.data.info;
+        //         chatR = response.data.info;
+
+        //     })
+        //     .catch(err => {
+        //         console.log(err.message);
+        //     })
+        // console.log($scope.chatRoom);
+        // chatObject = {
+        //     sender: sender,
+        //     reciever: reciever,
+        //     chatR: chatR
+        // }
+        // socket.emit('chats', chatObject);
     }
 }
 
